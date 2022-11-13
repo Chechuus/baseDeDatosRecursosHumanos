@@ -1,0 +1,70 @@
+CREATE TABLE IF NOT EXISTS regiones
+ (
+reg_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+reg_nombre VARCHAR(25)
+);
+/
+CREATE TABLE IF NOT EXISTS paises
+ (
+pai_id CHARACTER(2) NOT NULL PRIMARY KEY,
+pai_nombre VARCHAR(40),
+pai_reg_id INT NOT NULL,FOREIGN KEY(pai_reg_id) REFERENCES regiones(reg_id));
+/
+--- Aqui Cambie el nombre de las tablas pero mantuve columnas originales
+CREATE TABLE IF NOT EXISTS localidades
+ (
+loc_id int(4) NOT NULL PRIMARY KEY,
+loc_street_address VARCHAR(40),
+loc_postal_code VARCHAR(12),
+loc_city VARCHAR(30),
+loc_state_province    VARCHAR(25),  
+loc_pai_id char(2) NOT NULL,FOREIGN KEY(loc_pai_id) REFERENCES paises(pai_id));
+/
+-- A partir d eAqui las llame igual que en la imagen
+
+CREATE TABLE IF NOT EXISTS jobs
+ (
+job_id varchar(10) NOT NULL PRIMARY KEY,
+job_title varchar(35),
+job_min_salary int(6),
+job_max_salary int(6)
+ );     
+
+/
+CREATE TABLE IF NOT EXISTS departments
+ (
+dep_id int(4) NOT NULL PRIMARY KEY,
+dep_name VARCHAR(30),
+dep_manager_id int(6),
+dep_loc_id int(4) NOT NULL,FOREIGN KEY(dep_loc_id) REFERENCES localidades(loc_id)
+ );
+CREATE TABLE IF NOT EXISTS employees
+ (
+emp_id              int(6) NOT NULL PRIMARY KEY,
+emp_first_name      VARCHAR(20),
+emp_last_name       VARCHAR(25) NOT NULL,
+emp_email           VARCHAR(25) NOT NULL,
+emp_phone_number    VARCHAR(20),  
+emp_hire_date       DATE NOT NULL,
+emp_job_id          varchar(10) NOT NULL,FOREIGN KEY(emp_job_id) REFERENCES jobs(job_id),
+emp_salary          BIGINT(8.2) , 
+emp_commision_pct   BIGINT(2.2) ,     
+emp_manager_id      int(6),
+emp_dep_id          int(4) NOT NULL,FOREIGN KEY(emp_dep_id) REFERENCES departments(dep_id)
+ );    
+ALTER TABLE employees ADD CONSTRAINT `fk_recursiva` FOREIGN KEY (emp_manager_id) REFERENCES employees (emp_id)  
+     
+CREATE TABLE IF NOT EXISTS job_history
+ (
+jobh_id              int(6) NOT NULL PRIMARY KEY,
+jobh_start_date      date NOT NULL,
+jobh_end_date       date NOT NULL,
+jobh_job_id    varchar(10) NOT NULL,FOREIGN KEY(jobh_job_id) REFERENCES jobs(job_id),
+jobh_dep_id   int(4) NOT NULL,FOREIGN KEY(jobh_dep_id) REFERENCES departments(dep_id), 
+  
+   
+ );    
+
+---
+ALTER TABLE job_history ADD CONSTRAINT 'fk_recursivados'  foreign key(jobh_id) REFERENCES jobs(job_id)  
+

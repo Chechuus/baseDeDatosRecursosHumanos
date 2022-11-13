@@ -1,0 +1,34 @@
+-- 4 Registros para regiones
+SELECT * from regiones;
+-- 4 Registros para paises
+SELECT * from paises;
+-- 5 Registros para localidades
+SELECT * from localidades;
+-- 12 Registros para Jobs
+SELECT * from jobs;
+-- 8 Registros para departamentos
+SELECT * from departments;
+-- 12 Registros para Jobs
+SELECT * from employees;
+SELECT * from job_history;
+---------------
+SELECT * 
+FROM  employees emp 
+WHERE emp_job_id ='ST_CLERK'
+ AND emp_hire_date > '1997-12-31 00:00:00';
+
+SELECT * 
+FROM employees emp 
+WHERE emp.emp_commision_pct is not null
+ORDER BY emp.emp_salary DESC;
+
+SELECT emp.emp_salary,  
+       emp.emp_salary * 1.12 , 
+       round(emp.emp_salary * 1.12)
+FROM employees emp 
+WHERE emp.emp_commision_pct is not null;
+
+SELECT emp.emp_last_name
+FROM employees emp 
+WHERE SUBSTR(emp_last_name, 1, 1) in ('J','L')
+ 
